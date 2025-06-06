@@ -3,15 +3,13 @@ import MovieCard from './MovieCard'
 import MovieListSkeleton from './MovieListSkeleton'
 
 function MovieList({ movies, onFavoriteToggle, favorites }) {
-  if (movies.length === 0) {
-    return (
-      <div className="py-12">
-        <p className="text-gray-500 text-lg">No movies found</p>
-      </div>
-    )
-  }
+  const renderEmptyState = () => (
+    <div className="py-12">
+      <p className="text-gray-500 text-lg">No movies found</p>
+    </div>
+  )
 
-  return (
+  const renderMovieList = () => (
     <Suspense fallback={<MovieListSkeleton />}>
       <div className="space-y-4">
         {movies?.map((movie) => (
@@ -26,6 +24,8 @@ function MovieList({ movies, onFavoriteToggle, favorites }) {
       </div>
     </Suspense>
   )
+
+  return movies.length === 0 ? renderEmptyState() : renderMovieList()
 }
 
 export default MovieList

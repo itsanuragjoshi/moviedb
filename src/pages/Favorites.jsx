@@ -6,6 +6,27 @@ import MovieListSkeleton from '../components/MovieListSkeleton'
 import MetaTags from '../components/MetaTags'
 
 function Favorites({ movies, loading, onFavoriteToggle, favorites }) {
+  const renderMovieGrid = () => (
+    <div className="hidden lg:block">
+      <MovieGrid 
+        movies={movies} 
+        loading={loading} 
+        onFavoriteToggle={onFavoriteToggle}
+        favorites={favorites}
+      />
+    </div>
+  );
+
+  const renderMovieList = () => (
+    <div className="lg:hidden">
+      <MovieList
+        movies={movies}
+        onFavoriteToggle={onFavoriteToggle}
+        favorites={favorites}
+      />
+    </div>
+  );
+
   return (
     <>
       <MetaTags 
@@ -17,21 +38,8 @@ function Favorites({ movies, loading, onFavoriteToggle, favorites }) {
           <h1 className="text-3xl font-bold text-gray-900">My Favorites</h1>
         </div>
         <Suspense fallback={<MovieGridSkeleton />}>
-          <div className="hidden lg:block">
-            <MovieGrid 
-              movies={movies} 
-              loading={loading} 
-              onFavoriteToggle={onFavoriteToggle}
-              favorites={favorites}
-            />
-          </div>
-          <div className="lg:hidden">
-            <MovieList
-              movies={movies}
-              onFavoriteToggle={onFavoriteToggle}
-              favorites={favorites}
-            />
-          </div>
+          {renderMovieGrid()}
+          {renderMovieList()}
         </Suspense>
       </main>
     </>

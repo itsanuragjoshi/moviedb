@@ -12,12 +12,13 @@ const BASE_URL = import.meta.env.VITE_OMDB_BASE_URL;
 function App() {
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState(""); // To prevent excessive API calls
   const [loading, setLoading] = useState(false);
-  const [showFilterModal, setShowFilterModal] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [totalResults, setTotalResults] = useState(0);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+
   const [filters, setFilters] = useState({
     genres: [],
     yearStart: "",
@@ -25,42 +26,36 @@ function App() {
     ratingStart: "",
     ratingEnd: "",
   });
+
+  // Favorites management with localStorage persistence
   const [favorites, setFavorites] = useState(() => {
     try {
       const savedFavorites = localStorage.getItem("favorites");
-      if (savedFavorites) {
-        const parsedFavorites = JSON.parse(savedFavorites);
-        // Ensure we only have the required fields
-        return parsedFavorites.map(fav => ({
+      return savedFavorites ? JSON.parse(savedFavorites).map(fav => ({
           Title: fav.Title,
           Year: fav.Year,
           imdbID: fav.imdbID,
           Poster: fav.Poster,
           imdbRating: fav.imdbRating,
           Genre: fav.Genre
-        }));
-      }
-      return [];
+      })) : [];
     } catch (error) {
-      console.error("Error loading favorites from localStorage:", error);
+      console.error("Error loading favorites:", error);
       return [];
     }
   });
 
-  // Save favorites to localStorage whenever they change
+  // Persist favorites to localStorage whenever they change
   useEffect(() => {
-    try {
       localStorage.setItem("favorites", JSON.stringify(favorites));
-    } catch (error) {
-      console.error("Error saving favorites to localStorage:", error);
-    }
   }, [favorites]);
 
+  // Toggle favorite status for a movie
   const handleFavoriteToggle = useCallback((movie) => {
-    setFavorites((prev) => {
-      const isFavorite = prev.some((fav) => fav.imdbID === movie.imdbID);
+    setFavorites(prev => {
+      const isFavorite = prev.some(fav => fav.imdbID === movie.imdbID);
       const newFavorites = isFavorite
-        ? prev.filter((fav) => fav.imdbID !== movie.imdbID)
+        ? prev.filter(fav => fav.imdbID !== movie.imdbID)
         : [...prev, {
             Title: movie.Title,
             Year: movie.Year,
@@ -69,58 +64,49 @@ function App() {
             imdbRating: movie.imdbRating,
             Genre: movie.Genre
           }];
-
-      // Save to localStorage immediately
-      try {
-        localStorage.setItem("favorites", JSON.stringify(newFavorites));
-      } catch (error) {
-        console.error("Error saving favorites to localStorage:", error);
-      }
-
       return newFavorites;
     });
   }, []);
 
-  // Debounce search query
+  // Debounce search query to prevent excessive API calls
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-      setPage(1); // Reset page when search query changes
-      // Only reset movies if search query actually changed
+      setPage(1);
       if (searchQuery !== debouncedQuery) {
-        setMovies([]); // Clear existing movies
-        setHasMore(true); // Reset hasMore state
+        setMovies([]);
+        setHasMore(true);
       }
     }, 500);
-
     return () => clearTimeout(timer);
   }, [searchQuery, debouncedQuery]);
 
-  const fetchMovies = useCallback(
-    async (query = "", pageNum = 1) => {
+  // Function to fetch movies from OMDB API
+  const fetchMovies = useCallback(async (query = "", pageNum = 1) => {
       try {
         setLoading(true);
-        const params = {
-          apikey: API_KEY,
-          s: query || "movie",
-          page: pageNum,
-        };
-
-        const response = await axios.get(BASE_URL, { params });
+        // Initial API call to get movie list
+        const response = await axios.get(BASE_URL, {
+          params: {
+            apikey: API_KEY,
+            s: query || "movie",
+            page: pageNum,
+          }
+        });
 
         if (response.data.Response === "True") {
-          let newMovies = response.data.Search.map(movie => ({
-            Title: movie.Title,
-            Year: movie.Year,
-            imdbID: movie.imdbID,
-            Poster: movie.Poster,
-            imdbRating: "N/A",
-            Genre: "N/A"
-          }));
+          const newMovies = response.data.Search.map(movie => ({
+              Title: movie.Title,
+              Year: movie.Year,
+              imdbID: movie.imdbID,
+              Poster: movie.Poster,
+              imdbRating: "N/A",
+              Genre: "N/A"
+            }));
           const total = parseInt(response.data.totalResults);
           setTotalResults(total);
 
-          // Fetch additional details for each movie to apply genre and rating filters
+          // Fetch detailed information for each movie
           const detailedMovies = await Promise.all(
             newMovies.map(async (movie) => {
               try {
@@ -129,16 +115,13 @@ function App() {
                     apikey: API_KEY,
                     i: movie.imdbID,
                     plot: "short",
-                  },
-                });
-                if (detailResponse.data.Response === "True") {
-                  return {
-                    ...movie,
-                    imdbRating: detailResponse.data.imdbRating || "N/A",
-                    Genre: detailResponse.data.Genre || "N/A"
-                  };
                 }
-                return movie;
+                });
+                return detailResponse.data.Response === "True" ? {
+                      ...movie,
+                      imdbRating: detailResponse.data.imdbRating || "N/A",
+                      Genre: detailResponse.data.Genre || "N/A"
+                } : movie;
               } catch (error) {
                 console.error("Error fetching movie details:", error);
                 return movie;
@@ -146,53 +129,42 @@ function App() {
             })
           );
 
-          // Apply filters
+          // Apply filters to the fetched movies
           let filteredMovies = detailedMovies;
           
-          // Apply year filter
+          // Filter by year range
           if (filters.yearStart || filters.yearEnd) {
-            filteredMovies = filteredMovies.filter((movie) => {
-              const year = parseInt(movie.Year);
-              const startYear = filters.yearStart
-                ? parseInt(filters.yearStart)
-                : 1900;
-              const endYear = filters.yearEnd
-                ? parseInt(filters.yearEnd)
-                : new Date().getFullYear();
-              return year >= startYear && year <= endYear;
-            });
+            filteredMovies = filteredMovies.filter(movie => {
+                const year = parseInt(movie.Year);
+              const startYear = filters.yearStart ? parseInt(filters.yearStart) : 1900;
+              const endYear = filters.yearEnd ? parseInt(filters.yearEnd) : new Date().getFullYear();
+                return year >= startYear && year <= endYear;
+              });
           }
 
-          // Apply genre filter
+          // Filter by genres
           if (filters.genres.length > 0) {
-            filteredMovies = filteredMovies.filter((movie) => {
-              const movieGenres = movie.Genre?.split(", ") || [];
-              return filters.genres.some((genre) =>
-                movieGenres.includes(genre)
-              );
-            });
+            filteredMovies = filteredMovies.filter(movie => {
+                const movieGenres = movie.Genre?.split(", ") || [];
+              return filters.genres.some(genre => movieGenres.includes(genre));
+              });
           }
 
-          // Apply rating filter
+          // Filter by rating range
           if (filters.ratingStart || filters.ratingEnd) {
-            filteredMovies = filteredMovies.filter((movie) => {
-              const rating = movie.imdbRating === "N/A" ? 0 : parseFloat(movie.imdbRating);
-              const startRating = filters.ratingStart
-                ? parseFloat(filters.ratingStart)
-                : 0;
-              const endRating = filters.ratingEnd
-                ? parseFloat(filters.ratingEnd)
-                : 10;
-              return rating >= startRating && rating <= endRating;
-            });
+            filteredMovies = filteredMovies.filter(movie => {
+                const rating = movie.imdbRating === "N/A" ? 0 : parseFloat(movie.imdbRating);
+              const startRating = filters.ratingStart ? parseFloat(filters.ratingStart) : 0;
+              const endRating = filters.ratingEnd ? parseFloat(filters.ratingEnd) : 10;
+                return rating >= startRating && rating <= endRating;
+              });
           }
 
-          // Update movies state based on page number
+          // Update movies state based on pagination
           if (pageNum === 1) {
             setMovies(filteredMovies);
           } else {
             setMovies(prev => {
-              // Filter out any duplicates based on imdbID
               const uniqueMovies = [...prev];
               filteredMovies.forEach(newMovie => {
                 if (!uniqueMovies.some(movie => movie.imdbID === newMovie.imdbID)) {
@@ -203,43 +175,36 @@ function App() {
             });
           }
 
-          // Check if we have more results
+          // Update pagination state
           const currentTotal = pageNum === 1 ? filteredMovies.length : movies.length + filteredMovies.length;
           setHasMore(currentTotal < total);
         } else {
-          if (pageNum === 1) {
-            setMovies([]);
-          }
+          if (pageNum === 1) setMovies([]);
           setHasMore(false);
         }
       } catch (error) {
         console.error("Error fetching movies:", error);
-        if (pageNum === 1) {
-          setMovies([]);
-        }
+        if (pageNum === 1) setMovies([]);
         setHasMore(false);
       } finally {
         setLoading(false);
       }
-    },
-    [filters]
-  );
+  }, [filters, movies.length]);
 
+  // Fetch movies when search query or page changes
   useEffect(() => {
     fetchMovies(debouncedQuery, page);
   }, [fetchMovies, debouncedQuery, page]);
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
+  // Handle filter changes and reset pagination
   const handleFilterChange = useCallback((newFilters) => {
     setFilters(newFilters);
-    setPage(1); // Reset page when filters change
-    setMovies([]); // Clear existing movies
-    setHasMore(true); // Reset hasMore state
+    setPage(1);
+    setMovies([]);
+    setHasMore(true);
   }, []);
 
+  // Reset all filters to default values
   const handleClearFilters = useCallback(() => {
     setFilters({
       genres: [],
@@ -248,11 +213,12 @@ function App() {
       ratingStart: "",
       ratingEnd: "",
     });
-    setPage(1); // Reset page when filters are cleared
-    setMovies([]); // Clear existing movies
-    setHasMore(true); // Reset hasMore state
+    setPage(1);
+    setMovies([]);
+    setHasMore(true);
   }, []);
 
+  // Load more movies for infinite scroll
   const loadMore = useCallback(() => {
     if (!loading && hasMore) {
       setPage(prev => prev + 1);
@@ -263,7 +229,7 @@ function App() {
     <Router>
       <Layout
         searchQuery={searchQuery}
-        onSearch={handleSearch}
+        onSearch={e => setSearchQuery(e.target.value)}
         favoritesCount={favorites.length}
       >
         <Routes>
@@ -275,14 +241,14 @@ function App() {
                 loading={loading}
                 onFavoriteToggle={handleFavoriteToggle}
                 favorites={favorites}
-                showFilterModal={showFilterModal}
-                setShowFilterModal={setShowFilterModal}
                 filters={filters}
                 handleFilterChange={handleFilterChange}
                 handleClearFilters={handleClearFilters}
                 hasMore={hasMore}
                 loadMore={loadMore}
                 totalResults={totalResults}
+                showFilterModal={showFilterModal}
+                setShowFilterModal={setShowFilterModal}
               />
             }
           />

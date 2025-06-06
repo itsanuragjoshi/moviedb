@@ -3,15 +3,13 @@ import MovieCard from "./MovieCard";
 import MovieGridSkeleton from "./MovieGridSkeleton";
 
 function MovieGrid({ movies, onFavoriteToggle, favorites }) {
-  if (movies.length === 0) {
-    return (
-      <div className="py-12">
-        <p className="text-gray-500 text-lg">No movies found</p>
-      </div>
-    );
-  }
+  const renderEmptyState = () => (
+    <div className="py-12">
+      <p className="text-gray-500 text-lg">No movies found</p>
+    </div>
+  );
 
-  return (
+  const renderMovieGrid = () => (
     <Suspense fallback={<MovieGridSkeleton />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies?.map((movie) => (
@@ -26,6 +24,8 @@ function MovieGrid({ movies, onFavoriteToggle, favorites }) {
       </div>
     </Suspense>
   );
+
+  return movies.length === 0 ? renderEmptyState() : renderMovieGrid();
 }
 
 export default MovieGrid;
