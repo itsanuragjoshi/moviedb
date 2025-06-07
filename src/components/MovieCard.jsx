@@ -25,6 +25,8 @@ function MovieCard({ movie, onFavoriteToggle, isFavorite, type = 'grid' }) {
             src={posterUrl}
             alt={movie.Title}
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="p-3 flex-1 min-w-0">
@@ -54,6 +56,8 @@ function MovieCard({ movie, onFavoriteToggle, isFavorite, type = 'grid' }) {
           src={posterUrl}
           alt={movie.Title}
           className="w-full aspect-2/3 object-cover"
+          loading="lazy"
+          decoding="async"
         />
         {renderFavoriteButton()}
       </div>
