@@ -1,6 +1,6 @@
 function MovieListSkeleton() {
   const renderSkeletonItem = (index) => (
-    <div key={index} className="flex gap-4 p-4 bg-white rounded-lg border-2 border-black shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]">
+    <div key={index} className="flex gap-4 p-4 bg-white rounded-lg border-1 border-black shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]">
       <div className="w-24 h-36 flex-shrink-0 bg-gray-200 rounded-lg animate-pulse" />
       
       <div className="flex-1 min-w-0">

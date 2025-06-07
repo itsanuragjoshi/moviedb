@@ -33,7 +33,7 @@ function InfiniteScroll({ onLoadMore, hasMore, loading }) {
   }, [hasMore, loading, onLoadMore]);
 
   const renderLoadingSpinner = () => (
-    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black" />
+    <div className="animate-spin rounded-full h-6 w-6 border-b-1 border-black" />
   );
 
   return (

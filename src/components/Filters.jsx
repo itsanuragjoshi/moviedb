@@ -52,7 +52,7 @@ function Filters({ selectedGenres, selectedYears, selectedRatings, onGenreChange
           onChange={(e) => onYearChange(`${e.target.value} - ${selectedYears.split(' - ')[1]}`)}
           min="1900"
           max={currentYear}
-          className="w-full px-3 py-2 border-2 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
+          className="w-full px-3 py-2 border-1 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
         />
         <span className="text-gray-500">to</span>
         <input
@@ -62,7 +62,7 @@ function Filters({ selectedGenres, selectedYears, selectedRatings, onGenreChange
           onChange={(e) => onYearChange(`${selectedYears.split(' - ')[0]} - ${e.target.value}`)}
           min="1900"
           max={currentYear}
-          className="w-full px-3 py-2 border-2 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
+          className="w-full px-3 py-2 border-1 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
         />
       </div>
       <hr className="mt-6 border-gray-200" />
@@ -84,7 +84,7 @@ function Filters({ selectedGenres, selectedYears, selectedRatings, onGenreChange
           min="1.0"
           max="10.0"
           step="0.1"
-          className="w-full px-3 py-2 border-2 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
+          className="w-full px-3 py-2 border-1 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
         />
         <span className="text-gray-500">to</span>
         <input
@@ -95,7 +95,7 @@ function Filters({ selectedGenres, selectedYears, selectedRatings, onGenreChange
           min="1.0"
           max="10.0"
           step="0.1"
-          className="w-full px-3 py-2 border-2 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
+          className="w-full px-3 py-2 border-1 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]"
         />
       </div>
     </div>

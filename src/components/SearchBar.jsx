@@ -14,7 +14,7 @@ function SearchBar({ value, onChange, className = '' }) {
       placeholder="Search movies..."
       value={value}
       onChange={onChange}
-      className="w-full pl-10 pr-4 py-3 border-2 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] transition-colors duration-200"
+      className="w-full pl-10 pr-4 py-3 border-1 border-black rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] transition-colors duration-200"
       aria-label="Search movies"
     />
   );

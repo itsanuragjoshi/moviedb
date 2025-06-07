@@ -32,14 +32,14 @@ function Home({
   const renderFilterButton = () => (
     <button
       onClick={() => setShowFilterModal(true)}
-      className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all border-2 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 relative cursor-pointer"
+      className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all border-1 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 relative cursor-pointer"
       aria-label="Filters"
       title="Filters"
     >
       <Filter className="w-5 h-5" />
       <span className="font-medium">Filter</span>
       {activeFiltersCount > 0 && (
-        <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center border-2 border-white">
+        <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center border-1 border-white">
           {activeFiltersCount}
         </span>
       )}
@@ -49,7 +49,7 @@ function Home({
   const renderClearFiltersButton = () => (
     <button
       onClick={handleClearFilters}
-      className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all border-2 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1"
+      className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all border-1 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1"
       aria-label="Clear All Filters"
       title="Clear All Filters"
     >
@@ -59,8 +59,8 @@ function Home({
 
   const renderFilterModal = () => (
     <div className="fixed inset-0 bg-[rgba(255,255,255,0.6)] z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border-2 border-black shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]">
-        <div className="sticky top-0 bg-white p-6 border-b-2 border-black z-10">
+      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border-1 border-black shadow-[0px_6px_0px_0px_rgba(0,0,0,1)]">
+        <div className="sticky top-0 bg-white p-6 border-b-1 border-black z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Filter className="w-5 h-5" />
@@ -69,7 +69,7 @@ function Home({
             <div className="flex items-center gap-2">
               <button
                 onClick={handleClearFilters}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all border-2 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all border-1 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 cursor-pointer"
                 aria-label="Clear All Filters"
                 title="Clear All Filters"
               >
@@ -77,7 +77,7 @@ function Home({
               </button>
               <button
                 onClick={() => setShowFilterModal(false)}
-                className="p-2 text-gray-600 hover:text-gray-900 rounded-full transition-all border-2 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 cursor-pointer"
+                className="p-2 text-gray-600 hover:text-gray-900 rounded-full transition-all border-1 border-black hover:shadow-[0px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 cursor-pointer"
                 aria-label="Close filters"
                 title="Close filters"
               >

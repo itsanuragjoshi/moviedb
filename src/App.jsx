@@ -12,7 +12,7 @@ const BASE_URL = import.meta.env.VITE_OMDB_BASE_URL;
 function App() {
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState(""); // To prevent excessive API calls
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
