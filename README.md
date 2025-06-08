@@ -60,10 +60,10 @@ npm install
 yarn install
 ```
 
-3. Create a `.env` file in the root directory and add your OMDB API key:
-```env
-VITE_OMDB_API_KEY=your_api_key_here
-VITE_OMDB_BASE_URL=http://www.omdbapi.com/
+3. Copy the example environment file and add your OMDB API key:
+```bash
+cp .env.example .env
+# Then edit .env to add your actual API key
 ```
 
 4. Start the development server:
