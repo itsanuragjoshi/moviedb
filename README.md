@@ -27,7 +27,6 @@ A modern, responsive movie browser application built with React that allows user
 
 3. **Enhanced User Experience**
    - Skeleton loading states with Suspense
-   - Smooth animations and transitions
    - Favorite count indicator
    - Custom placeholder for missing movie posters
    - Debounced search to prevent API spam
@@ -36,7 +35,7 @@ A modern, responsive movie browser application built with React that allows user
    - Custom shadow effects
    - Hover animations
    - Consistent border styling
-   - Responsive header with search
+   - Responsive sticky header with search
    - Prominent favorite buttons
 
 ## Getting Started
@@ -120,7 +119,6 @@ yarn dev
 3. **Technical Improvements**
    - Implement proper error boundaries
    - Add unit and integration tests
-   - Implement proper TypeScript types
    - Add proper SEO optimization
    - Implement proper caching strategy
 
