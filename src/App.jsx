@@ -226,7 +226,7 @@ function App() {
         setLoading(false);
       }
     },
-    [filters, movies.length]
+    [filters]
   );
 
   // Fetch movies when search query or page changes
