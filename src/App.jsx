@@ -98,8 +98,6 @@ function App() {
     async (query = "", pageNum = 1) => {
       try {
         setLoading(true);
-        // Add artificial delay to show skeleton UI
-        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // Initial API call to get movie list
         const response = await axios.get(BASE_URL, {
