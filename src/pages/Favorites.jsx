@@ -1,16 +1,13 @@
-import { Suspense } from 'react'
-import MovieGrid from '../components/MovieGrid'
-import MovieList from '../components/MovieList'
-import MovieGridSkeleton from '../components/MovieGridSkeleton'
-import MovieListSkeleton from '../components/MovieListSkeleton'
-import MetaTags from '../components/MetaTags'
+import MetaTags from "../components/MetaTags";
+import MovieGrid from "../components/MovieGrid";
+import MovieList from "../components/MovieList";
 
 function Favorites({ movies, loading, onFavoriteToggle, favorites }) {
   const renderMovieGrid = () => (
     <div className="hidden lg:block">
-      <MovieGrid 
-        movies={movies} 
-        loading={loading} 
+      <MovieGrid
+        movies={movies}
+        loading={loading}
         onFavoriteToggle={onFavoriteToggle}
         favorites={favorites}
       />
@@ -29,7 +26,7 @@ function Favorites({ movies, loading, onFavoriteToggle, favorites }) {
 
   return (
     <>
-      <MetaTags 
+      <MetaTags
         title="My Favorite Movies - Movie Browser"
         description="View and manage your collection of favorite movies. Access your saved films anytime and keep track of what you love."
       />
@@ -37,13 +34,11 @@ function Favorites({ movies, loading, onFavoriteToggle, favorites }) {
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold text-gray-900">My Favorites</h1>
         </div>
-        <Suspense fallback={<MovieGridSkeleton />}>
-          {renderMovieGrid()}
-          {renderMovieList()}
-        </Suspense>
+        {renderMovieGrid()}
+        {renderMovieList()}
       </main>
     </>
-  )
+  );
 }
 
-export default Favorites 
+export default Favorites;

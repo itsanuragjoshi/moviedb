@@ -1,8 +1,8 @@
-import { Search } from 'lucide-react'
+import { SearchIcon } from 'lucide-react'
 
 function SearchBar({ value, onChange, className = '' }) {
   const renderSearchIcon = () => (
-    <Search 
+    <SearchIcon 
       className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" 
       aria-hidden="true"
     />

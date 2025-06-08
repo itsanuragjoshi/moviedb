@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { HeartIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
@@ -23,7 +23,7 @@ function Header({ searchQuery, onSearch, favoritesCount }) {
       aria-label="Favorites"
       title="Favorites"
     >
-      <Heart className="w-6 h-6" fill="red" />
+      <HeartIcon className="w-6 h-6" fill="red" />
       {favoritesCount > 0 && (
         <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center border-1 border-white">
           {favoritesCount}

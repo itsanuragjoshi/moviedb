@@ -1,9 +1,7 @@
-import { Suspense } from "react";
-import { Filter, X } from "lucide-react";
-import MovieGrid from "../components/MovieGrid";
-import MovieGridSkeleton from "../components/MovieGridSkeleton";
-import MovieList from "../components/MovieList";
+import { FilterIcon, XIcon } from "lucide-react";
 import MetaTags from "../components/MetaTags";
+import MovieGrid from "../components/MovieGrid";
+import MovieList from "../components/MovieList";
 import Filters from "../components/Filters";
 import InfiniteScroll from "../components/InfiniteScroll";
 
@@ -20,6 +18,7 @@ function Home({
   hasMore,
   loadMore,
   totalResults,
+  page,
 }) {
   const activeFiltersCount = [
     filters.genres.length,
@@ -36,7 +35,7 @@ function Home({
       aria-label="Filters"
       title="Filters"
     >
-      <Filter className="w-5 h-5" />
+      <FilterIcon className="w-5 h-5" />
       <span className="font-medium">Filter</span>
       {activeFiltersCount > 0 && (
         <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center border-1 border-white">
@@ -63,7 +62,7 @@ function Home({
         <div className="sticky top-0 bg-white p-6 border-b-1 border-black z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5" />
+              <FilterIcon className="w-5 h-5" />
               <h2 className="text-xl font-bold">Filter By</h2>
             </div>
             <div className="flex items-center gap-2">
@@ -81,7 +80,7 @@ function Home({
                 aria-label="Close filters"
                 title="Close filters"
               >
-                <X className="w-6 h-6" />
+                <XIcon className="w-6 h-6" />
               </button>
             </div>
           </div>
@@ -124,11 +123,6 @@ function Home({
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">All Movies</h1>
-            {/* {totalResults > 0 && (
-              <p className="text-gray-500 mt-1">
-                Found {totalResults} {totalResults === 1 ? "movie" : "movies"}
-              </p>
-            )} */}
           </div>
           <div className="flex items-center gap-4">
             {activeFiltersCount > 0 && renderClearFiltersButton()}
@@ -141,13 +135,20 @@ function Home({
             movies={movies}
             onFavoriteToggle={onFavoriteToggle}
             favorites={favorites}
+            totalResults={totalResults}
+            loading={loading}
+            page={page}
           />
         </div>
+
         <div className="md:hidden">
           <MovieList
             movies={movies}
             onFavoriteToggle={onFavoriteToggle}
             favorites={favorites}
+            totalResults={totalResults}
+            loading={loading}
+            page={page}
           />
         </div>
 

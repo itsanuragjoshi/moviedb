@@ -1,8 +1,7 @@
-import { Suspense } from "react";
 import MovieCard from "./MovieCard";
-import MovieGridSkeleton from "./MovieGridSkeleton";
+import MovieCardSkeleton from "./MovieCardSkeleton";
 
-function MovieGrid({ movies, onFavoriteToggle, favorites }) {
+function MovieGrid({ movies, onFavoriteToggle, favorites, totalResults, loading, page }) {
   const renderEmptyState = () => (
     <div className="py-12">
       <p className="text-gray-500 text-lg">No movies found</p>
@@ -10,7 +9,7 @@ function MovieGrid({ movies, onFavoriteToggle, favorites }) {
   );
 
   const renderMovieGrid = () => (
-    <Suspense fallback={<MovieGridSkeleton />}>
+    <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies?.map((movie) => (
           <MovieCard
@@ -21,11 +20,24 @@ function MovieGrid({ movies, onFavoriteToggle, favorites }) {
             type="grid"
           />
         ))}
+        {loading && page > 1 && Array.from({ length: 10 }).map((_, index) => (
+          <MovieCardSkeleton key={`skeleton-${index}`} type="grid" />
+        ))}
       </div>
-    </Suspense>
+    </>
   );
 
-  return movies.length === 0 ? renderEmptyState() : renderMovieGrid();
+  if (loading && page === 1) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <MovieCardSkeleton key={index} type="grid" />
+        ))}
+      </div>
+    );
+  }
+
+  return totalResults === 0 ? renderEmptyState() : renderMovieGrid();
 }
 
 export default MovieGrid;
