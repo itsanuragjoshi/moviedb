@@ -23,11 +23,12 @@ function MovieCardSkeleton({ type = 'grid' }) {
     <div className="bg-white rounded-lg overflow-hidden shadow-md animate-pulse">
       <div className="w-full aspect-2/3 bg-gray-200" />
       <div className="p-4">
-        <div className="h-6 bg-gray-200 rounded w-3/4 mb-2" />
-        <div className="flex items-center justify-between mt-2">
+        <div className="h-6 bg-gray-200 rounded w-full mb-2" />
+        <div className="flex items-center w-3/4 justify-between my-2">
           <div className="h-4 bg-gray-200 rounded w-1/4" />
           <div className="h-4 bg-gray-200 rounded w-1/4" />
         </div>
+        <div className="h-4 bg-gray-200 rounded w-full mb-2" />
       </div>
     </div>
   );
