@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom'
-import MetaTags from '../components/MetaTags'
+import { Link } from "react-router-dom";
+import MetaTags from "../components/MetaTags";
 
 function Error404() {
   const renderContent = () => (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
       <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
-      <h2 className="text-2xl font-semibold text-gray-700 mb-6">Page Not Found</h2>
+      <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+        Page Not Found
+      </h2>
       <p className="text-gray-600 mb-8 max-w-md">
         Oops! The page you're looking for doesn't exist or has been moved.
       </p>
@@ -16,19 +18,17 @@ function Error404() {
         Go to Homepage
       </Link>
     </div>
-  )
+  );
 
   return (
     <>
-      <MetaTags 
+      <MetaTags
         title="404 - Page Not Found | Movie Browser"
         description="The page you're looking for doesn't exist. Return to the home page to continue browsing movies."
       />
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {renderContent()}
-      </main>
+      <main className="max-w-7xl mx-auto px-4 py-8">{renderContent()}</main>
     </>
-  )
+  );
 }
 
-export default Error404 
+export default Error404;

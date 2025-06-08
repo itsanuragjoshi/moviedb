@@ -1,4 +1,4 @@
-import Header from './Header'
+import Header from "./Header";
 
 function Layout({ children, searchQuery, onSearch, favoritesCount }) {
   return (
@@ -10,7 +10,7 @@ function Layout({ children, searchQuery, onSearch, favoritesCount }) {
       />
       {children}
     </div>
-  )
+  );
 }
 
-export default Layout 
+export default Layout;
